@@ -24,14 +24,14 @@ assign busy = state;
 always @(posedge i_clk or negedge i_rstn) begin
     if(~i_rstn) begin
         state <= idle;
+        ackSync0 <= 0;
+        ackSync1 <= 0;
         req <= 0;
-        reqSync0 <= 0;
-        reqSync1 <= 0;
     end
     else begin
         state <= next_state;
-        reqSync0 <= req;
-        reqSync1 <= reqSync0;
+        ackSync0 <= ack;
+        ackSync1 <= ackSync0;
     end
 end
 
@@ -62,12 +62,12 @@ end
 //ACK logic
 always @(posedge o_clk or negedge o_rstn) begin
     if(~o_rstn) begin
-        ackSync0 <= 0;
-        ackSync1 <= 0;
+        reqSync0 <= 0;
+        reqSync1 <= 0;
     end
     else begin
-        ackSync0 <= ack;
-        ackSync1 <= ackSync0;
+        reqSync0 <= req;
+        reqSync1 <= reqSync0;
     end
 end
 
